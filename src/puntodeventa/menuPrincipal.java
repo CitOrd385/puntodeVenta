@@ -27,40 +27,40 @@ public class menuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        bntRV = new javax.swing.JButton();
+        bntBV = new javax.swing.JButton();
+        btnS = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        btnRegistroventas = new javax.swing.JMenuItem();
-        btnBusquedaVentas = new javax.swing.JMenuItem();
-        btnSalir = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        mM = new javax.swing.JMenu();
+        mRV = new javax.swing.JMenuItem();
+        mBV = new javax.swing.JMenuItem();
+        mS = new javax.swing.JMenuItem();
+        mInfo = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Punto de venta");
 
-        jButton1.setText("jButton1");
+        bntRV.setText("Registro de ventas");
 
-        jButton2.setText("jButton2");
+        bntBV.setText("Busqueda de ventas");
 
-        jButton3.setText("jButton3");
+        btnS.setText("Salir");
 
-        jMenu1.setText("File");
+        mM.setText("Menu");
 
-        btnRegistroventas.setText("Registro de ventas");
-        jMenu1.add(btnRegistroventas);
+        mRV.setText("Registro de ventas");
+        mM.add(mRV);
 
-        btnBusquedaVentas.setText("Busqueda de ventas");
-        jMenu1.add(btnBusquedaVentas);
+        mBV.setText("Busqueda de ventas");
+        mM.add(mBV);
 
-        btnSalir.setText("Salir");
-        jMenu1.add(btnSalir);
+        mS.setText("Salir");
+        mM.add(mS);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(mM);
 
-        jMenu2.setText("Información");
-        jMenuBar1.add(jMenu2);
+        mInfo.setText("Información");
+        jMenuBar1.add(mInfo);
 
         setJMenuBar(jMenuBar1);
 
@@ -69,26 +69,26 @@ public class menuPrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(167, Short.MAX_VALUE)
+                .addContainerGap(135, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1))
-                        .addGap(160, 160, 160))
+                        .addComponent(btnS)
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addContainerGap())))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(bntRV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bntBV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(131, 131, 131))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(157, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
-                .addGap(25, 25, 25)
-                .addComponent(jButton3)
+                .addGap(36, 36, 36)
+                .addComponent(bntRV)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                .addComponent(bntBV)
+                .addGap(58, 58, 58)
+                .addComponent(btnS)
                 .addContainerGap())
         );
 
@@ -131,14 +131,14 @@ public class menuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem btnBusquedaVentas;
-    private javax.swing.JMenuItem btnRegistroventas;
-    private javax.swing.JMenuItem btnSalir;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JButton bntBV;
+    private javax.swing.JButton bntRV;
+    private javax.swing.JButton btnS;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem mBV;
+    private javax.swing.JMenu mInfo;
+    private javax.swing.JMenu mM;
+    private javax.swing.JMenuItem mRV;
+    private javax.swing.JMenuItem mS;
     // End of variables declaration//GEN-END:variables
 }
