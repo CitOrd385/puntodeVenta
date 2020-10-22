@@ -6,12 +6,28 @@
 package daos;
 
 import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
  * @author david
  */
 public abstract class BaseDAO<T> {
+    
+    protected EntityManager getEntityManager(){
+    
+      try{
+      EntityManagerFactory emf = Persistence.createEntityManagerFactory("pruebasJPAPU");
+        //Crea el entityManager real
+        EntityManager em= emf.createEntityManager();
+        return em;
+      }catch(Exception ex){
+          throw ex;
+      }
+      
+  } 
     
     public abstract void agregar(T entidad);
     public abstract ArrayList<T> consultar();
