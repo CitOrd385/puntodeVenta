@@ -18,7 +18,10 @@ public class ClienteDAO extends BaseDAO<Cliente>{
     @Override
     public void agregar(Cliente entidad) {
         EntityManager em= this.getEntityManager();
-        
+        em.getTransaction().begin();
+        em.persist(entidad);
+        System.out.println("Se guardó el cliente");
+        em.getTransaction().commit();
         
     }
 

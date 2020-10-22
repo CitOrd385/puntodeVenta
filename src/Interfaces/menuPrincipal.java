@@ -1,4 +1,4 @@
-package puntodeventa;
+package Interfaces;
 
 /**
  *

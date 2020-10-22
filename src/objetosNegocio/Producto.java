@@ -6,11 +6,15 @@
 package objetosNegocio;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -21,7 +25,6 @@ import javax.persistence.Table;
 @Table(name="produtos")
 public class Producto implements Serializable {
 
-    
     @Id
     @Column(name="idProducto")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +39,27 @@ public class Producto implements Serializable {
     @Column(name = "stock", nullable= false, length= 11)
     private Integer stock;
     
+    @OneToMany(cascade= CascadeType.ALL, mappedBy= "producto")
+    private List<RelProductoVentas> ventas;
+
+    public Producto() {
+        this.ventas= new ArrayList<>();
+    }
+
+    public Producto(String nombre, float precioActual, Integer stock, List<RelProductoVentas> ventas) {
+        this.nombre = nombre;
+        this.precioActual = precioActual;
+        this.stock = stock;
+        this.ventas = new ArrayList<>() ;
+    }
+
+    public Producto(Integer id, String nombre, float precioActual, Integer stock, List<RelProductoVentas> ventas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precioActual = precioActual;
+        this.stock = stock;
+        this.ventas = new ArrayList<>();
+    }
     
     
     public Integer getId() {
@@ -45,6 +69,40 @@ public class Producto implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public float getPrecioActual() {
+        return precioActual;
+    }
+
+    public void setPrecioActual(float precioActual) {
+        this.precioActual = precioActual;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public List<RelProductoVentas> getVentas() {
+        return ventas;
+    }
+
+    public void setVentas(List<RelProductoVentas> ventas) {
+        this.ventas = ventas;
+    }
+    
+    
 
     @Override
     public int hashCode() {
@@ -68,7 +126,10 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "objetosNegocio.Producto[ id=" + id + " ]";
+        return "Producto{" + "id= " + id + ", nombre= " + nombre + ", precioActual= "
+                + precioActual + ", stock= " + stock + ", ventas= " + ventas + '}';
     }
+
+   
     
 }

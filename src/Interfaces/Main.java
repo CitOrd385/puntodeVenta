@@ -3,7 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package puntodeventa;
+package Interfaces;
+
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+import objetosNegocio.Cliente;
+import objetosNegocio.Producto;
+import objetosNegocio.Venta;
 
 /**
  *
@@ -16,6 +23,7 @@ public class Main {
      */
     public static void main(String[] args) {
         
+       
     }
     
 }
