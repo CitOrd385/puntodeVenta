@@ -32,6 +32,7 @@ public class frmRegistro extends javax.swing.JDialog {
         lblDetalles = new javax.swing.JLabel();
         lblCliente = new javax.swing.JLabel();
         cbClientes = new javax.swing.JComboBox<>();
+        btnSalir = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         lblBuscador = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
@@ -61,6 +62,13 @@ public class frmRegistro extends javax.swing.JDialog {
 
         cbClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
 
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -88,6 +96,7 @@ public class frmRegistro extends javax.swing.JDialog {
                     .addComponent(txtDescuento, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
                     .addComponent(txtTotal)
                     .addComponent(txtSubtotal)))
+            .addComponent(btnSalir)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,7 +124,9 @@ public class frmRegistro extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bntRegistrar)
                     .addComponent(btnCancelar))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSalir)
+                .addContainerGap())
         );
 
         lblBuscador.setText("Buscador de Productos");
@@ -248,6 +259,10 @@ public class frmRegistro extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -292,6 +307,7 @@ public class frmRegistro extends javax.swing.JDialog {
     private javax.swing.JButton bntRegistrar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> cbClientes;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
