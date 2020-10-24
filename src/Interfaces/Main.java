@@ -5,9 +5,8 @@
  */
 package Interfaces;
 
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
+
+import daos.ClienteDAO;
 import objetosNegocio.Cliente;
 import objetosNegocio.Producto;
 import objetosNegocio.Venta;
@@ -22,7 +21,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+       ClienteDAO clientedao = new ClienteDAO();
+       
+       Cliente cliente = new Cliente("Jazmin Gaxiola","Modulo deportivo", "JGSA021493", "6442639845");
+       
+       clientedao.agregar(cliente);
+       
+       clientedao.consultar();
        
     }
     

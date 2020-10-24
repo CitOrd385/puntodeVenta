@@ -19,7 +19,7 @@ public abstract class BaseDAO<T> {
     protected EntityManager getEntityManager(){
     
       try{
-      EntityManagerFactory emf = Persistence.createEntityManagerFactory("pruebasJPAPU");
+      EntityManagerFactory emf = Persistence.createEntityManagerFactory("PuntoDeVentaPU");
         //Crea el entityManager real
         EntityManager em= emf.createEntityManager();
         return em;

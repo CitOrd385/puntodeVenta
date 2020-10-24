@@ -31,11 +31,12 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name="direccion", length=50)
-    private String direccion;
-    
+   
     @Column(name="nombre", nullable= false, length= 20)
     private String nombre;
+    
+    @Column(name="direccion", length=50)
+    private String direccion;
     
     @Column(name= "rfc", unique= true, nullable= false, length= 10)
     private String rfc;
@@ -43,46 +44,25 @@ public class Cliente implements Serializable {
     @Column(name="telefono", length= 15)
     private String telefono;
     
-    @OneToMany(cascade= CascadeType.ALL, mappedBy= "cliente") 
-    private List<Venta> ventas;
+  
 
     
     public Cliente() {
     }
 
-    public Cliente(Integer id, String direccion, String nombre, String rfc, String telefono) {
+    public Cliente(String nombre, String direccion, String rfc, String telefono) {
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.rfc = rfc;
+        this.telefono = telefono;
+    }
+
+    public Cliente(Integer id, String nombre, String direccion, String rfc, String telefono) {
         this.id = id;
-        this.direccion = direccion;
         this.nombre = nombre;
+        this.direccion = direccion;
         this.rfc = rfc;
         this.telefono = telefono;
-    }
-
-    
-    public Cliente(String direccion, String nombre, String rfc, String telefono) {
-        this.direccion = direccion;
-        this.nombre = nombre;
-        this.rfc = rfc;
-        this.telefono = telefono;
-    }
-    
-    
-
-    public Cliente(String direccion, String nombre, String rfc, String telefono, List<Venta> ventas) {
-        this.direccion = direccion;
-        this.nombre = nombre;
-        this.rfc = rfc;
-        this.telefono = telefono;
-        this.ventas = ventas;
-    }
-
-    public Cliente(Integer id, String direccion, String nombre, String rfc, String telefono, List<Venta> ventas) {
-        this.id = id;
-        this.direccion = direccion;
-        this.nombre = nombre;
-        this.rfc = rfc;
-        this.telefono = telefono;
-        this.ventas = ventas;
     }
 
     
@@ -126,14 +106,6 @@ public class Cliente implements Serializable {
         this.telefono = telefono;
     }
 
-    public List<Venta> getVentas() {
-        return ventas;
-    }
-
-    public void setVentas(List<Venta> ventas) {
-        this.ventas = ventas;
-    }
-
     
     
     @Override
@@ -160,7 +132,7 @@ public class Cliente implements Serializable {
     public String toString() {
         return "Cliente{" + "id= " + id + ", direccion= " + direccion + 
                 ", nombre= " + nombre + ", rfc= " + rfc + ", telefono= " 
-                + telefono + ", ventas= " + ventas + '}';
+                + telefono +  '}';
     }
 
     

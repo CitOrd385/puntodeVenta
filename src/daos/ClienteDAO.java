@@ -6,7 +6,9 @@
 package daos;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import objetosNegocio.Cliente;
 
 /**
@@ -27,12 +29,31 @@ public class ClienteDAO extends BaseDAO<Cliente>{
 
     @Override
     public ArrayList<Cliente> consultar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em= this.getEntityManager();
+     
+        
+         Query consulta= em.createQuery("SELECT C FROM Cliente c ");
+        em.getTransaction().begin();
+
+        List<Cliente> clientes = consulta.getResultList();
+        
+        
+        for (Cliente clientes1 : clientes) {
+            System.out.println(clientes1);
+        }
+        
+        return new ArrayList<>(clientes);
+  
     }
 
     @Override
     public Cliente constultarPorId(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em= this.getEntityManager();
+
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+
+        return em.find(Cliente.class, id);
     }
 
     @Override
