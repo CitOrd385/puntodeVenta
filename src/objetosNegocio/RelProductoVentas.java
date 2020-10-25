@@ -34,6 +34,7 @@ public class RelProductoVentas implements Serializable {
     private Producto producto;
     
     @ManyToOne(optional= false)
+    @JoinColumn(name = "idVenta", nullable = false)
     private Venta venta;
     
     

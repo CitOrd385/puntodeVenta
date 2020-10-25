@@ -39,10 +39,13 @@ public class Producto implements Serializable {
     @Column(name = "stock", nullable= false, length= 11)
     private Integer stock;
     
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto")
+    private List<RelProductoVentas> ventas;
+
     
 
     public Producto() {
-      
+      this.ventas = new ArrayList<>();
     }
 
     public Producto(String nombre, float precioActual, Integer stock) {
@@ -59,6 +62,22 @@ public class Producto implements Serializable {
         this.stock = stock;
         
     }
+
+    public Producto(String nombre, float precioActual, Integer stock, List<RelProductoVentas> ventas) {
+        this.nombre = nombre;
+        this.precioActual = precioActual;
+        this.stock = stock;
+        this.ventas = ventas;
+    }
+
+    public Producto(Integer id, String nombre, float precioActual, Integer stock, List<RelProductoVentas> ventas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precioActual = precioActual;
+        this.stock = stock;
+        this.ventas = ventas;
+    }
+    
     
     
     public Integer getId() {

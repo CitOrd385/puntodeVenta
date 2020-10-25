@@ -57,6 +57,22 @@ public class Venta implements Serializable {
         productos= new ArrayList<>();
     }
 
+    public Venta(float descuento, Calendar fecha, float montoTotal, Cliente cliente) {
+        this.descuento = descuento;
+        this.fecha = fecha;
+        this.montoTotal = montoTotal;
+        this.cliente = cliente;
+    }
+
+    public Venta(Integer id, float descuento, Calendar fecha, float montoTotal, Cliente cliente) {
+        this.id = id;
+        this.descuento = descuento;
+        this.fecha = fecha;
+        this.montoTotal = montoTotal;
+        this.cliente = cliente;
+    }
+
+    
     
     public Venta(float descuento, Calendar fecha, float montoTotal, Cliente cliente, List<RelProductoVentas> productos) {
         this.descuento = descuento;

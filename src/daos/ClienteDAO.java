@@ -15,40 +15,38 @@ import objetosNegocio.Cliente;
  *
  * @author Citlali Orduño, David Valdez
  */
-public class ClienteDAO extends BaseDAO<Cliente>{
+public class ClienteDAO extends BaseDAO<Cliente> {
 
     @Override
     public void agregar(Cliente entidad) {
-        EntityManager em= this.getEntityManager();
+        EntityManager em = this.getEntityManager();
         em.getTransaction().begin();
         em.persist(entidad);
         System.out.println("Se guardó el cliente");
         em.getTransaction().commit();
-        
+
     }
 
     @Override
     public ArrayList<Cliente> consultar() {
-        EntityManager em= this.getEntityManager();
-     
-        
-         Query consulta= em.createQuery("SELECT C FROM Cliente c ");
+        EntityManager em = this.getEntityManager();
+
+        Query consulta = em.createQuery("SELECT C FROM Cliente c ");
         em.getTransaction().begin();
 
         List<Cliente> clientes = consulta.getResultList();
-        
-        
+
         for (Cliente clientes1 : clientes) {
             System.out.println(clientes1);
         }
-        
+
         return new ArrayList<>(clientes);
-  
+
     }
 
     @Override
     public Cliente constultarPorId(Integer id) {
-        EntityManager em= this.getEntityManager();
+        EntityManager em = this.getEntityManager();
 
         em.getTransaction().begin();
         em.getTransaction().commit();
@@ -57,18 +55,55 @@ public class ClienteDAO extends BaseDAO<Cliente>{
     }
 
     @Override
-    public void actualizar(Cliente entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void actualizar(Cliente cliente) {
+        EntityManager em = this.getEntityManager();
+        em.getTransaction().begin();
+
+        Cliente clienteX = em.find(Cliente.class, cliente.getId());
+        if (clienteX != null) {
+            clienteX.setNombre(cliente.getNombre());
+            clienteX.setDireccion(cliente.getDireccion());
+            clienteX.setRfc(cliente.getRfc());
+            clienteX.setTelefono(cliente.getTelefono());
+            em.merge(clienteX);
+        } else {
+            throw new IllegalArgumentException("El cliente no existe");
+        }
+        em.getTransaction().commit();
+        System.out.println("El ciente fue actualizado");
     }
 
     @Override
-    public void eliminar(Cliente entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void eliminar(Cliente id) {
+        EntityManager em = this.getEntityManager();
+
+        em.getTransaction().begin();
+        Cliente clienteX = em.find(Cliente.class, id);
+        if (clienteX != null) {
+            em.remove(id);
+        } else {
+            throw new IllegalArgumentException("El cliente no existe");
+        }
+
+        em.getTransaction().commit();
+        System.out.println("El cliente fue eliminado");
     }
 
     @Override
     public ArrayList<Cliente> buscar(String nombre) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = this.getEntityManager();
+        em.getTransaction().begin();
+        List<Cliente> clientes;
+        if (!nombre.equals("")) {
+            String jpql = String.format("SELECT * FROM puntodeventa.clientes WHERE puntodeventa.clientes.nombre = '%s';", nombre);
+            clientes = em.createNativeQuery(jpql, Cliente.class).getResultList();
+        } else {
+            String jpql = "SELECT * FROM puntodeventa.clientes;";
+            clientes = em.createNativeQuery(jpql, Cliente.class).getResultList();
+        }
+        em.getTransaction().commit();
+
+        return new ArrayList<>(clientes);
     }
-    
+
 }

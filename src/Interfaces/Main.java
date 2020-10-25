@@ -7,6 +7,8 @@ package Interfaces;
 
 
 import daos.ClienteDAO;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import objetosNegocio.Cliente;
 import objetosNegocio.Producto;
 import objetosNegocio.Venta;
@@ -23,12 +25,21 @@ public class Main {
     public static void main(String[] args) {
        ClienteDAO clientedao = new ClienteDAO();
        
-       Cliente cliente = new Cliente("Jazmin Gaxiola","Modulo deportivo", "JGSA021493", "6442639845");
+       Cliente cliente = new Cliente("Maribel S.","Villa ITSON 1035", "DVAV041434", "6443264762");
        
-       clientedao.agregar(cliente);
        
-       clientedao.consultar();
+       Calendar fecha= new GregorianCalendar();
+       //Venta venta = new Venta(20, fecha, 230, cliente);
        
+       //clientedao.agregar(cliente);
+       
+       
+       
+      // clientedao.consultar();
+       
+     // Cliente clientecito= clientedao.constultarPorId(1);
+       // System.out.println(clientecito);
     }
+    
     
 }
