@@ -19,6 +19,7 @@ public class frmClientes extends javax.swing.JDialog {
     public frmClientes(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.clienteDAO = new ClienteDAO();
+        this.cargarClientes();
         initComponents();
     }
     
