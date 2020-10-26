@@ -25,20 +25,25 @@ public class Main {
     public static void main(String[] args) {
        ClienteDAO clientedao = new ClienteDAO();
        
-       Cliente cliente = new Cliente("Maribel S.","Villa ITSON 1035", "DVAV041434", "6443264762");
+        
        
+       //Cliente cliente = new Cliente("M", "Calandrias 528", "MFOS051412", "6447589446");
        
-       Calendar fecha= new GregorianCalendar();
+       //clientedao.actualizar(cliente);
+        //Cliente cliente2= new Cliente(Integer.SIZE, nombre, direccion, rfc, telefono);
+       //Calendar fecha= new GregorianCalendar();
+        
        //Venta venta = new Venta(20, fecha, 230, cliente);
        
-       //clientedao.agregar(cliente);
+      // clientedao.agregar(cliente);
        
        
        
       // clientedao.consultar();
        
-     // Cliente clientecito= clientedao.constultarPorId(1);
-       // System.out.println(clientecito);
+      
+       //clientedao.eliminar(2);
+      //System.out.println(clientecito);
     }
     
     

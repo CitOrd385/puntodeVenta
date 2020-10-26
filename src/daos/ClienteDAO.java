@@ -65,7 +65,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             clienteX.setDireccion(cliente.getDireccion());
             clienteX.setRfc(cliente.getRfc());
             clienteX.setTelefono(cliente.getTelefono());
-            em.merge(clienteX);
+            em.persist(clienteX);
         } else {
             throw new IllegalArgumentException("El cliente no existe");
         }
@@ -74,13 +74,13 @@ public class ClienteDAO extends BaseDAO<Cliente> {
     }
 
     @Override
-    public void eliminar(Cliente id) {
+    public void eliminar(Integer id) {
         EntityManager em = this.getEntityManager();
 
         em.getTransaction().begin();
         Cliente clienteX = em.find(Cliente.class, id);
         if (clienteX != null) {
-            em.remove(id);
+            em.remove(clienteX);
         } else {
             throw new IllegalArgumentException("El cliente no existe");
         }

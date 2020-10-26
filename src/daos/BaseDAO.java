@@ -33,7 +33,7 @@ public abstract class BaseDAO<T> {
     public abstract ArrayList<T> consultar();
     public abstract T constultarPorId(Integer id);
     public abstract void actualizar (T entidad);
-    public abstract void eliminar (T entidad);
+    public abstract void eliminar (Integer id);
     public abstract ArrayList<T> buscar(String nombre);
     
 }

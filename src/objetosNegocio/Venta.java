@@ -72,8 +72,6 @@ public class Venta implements Serializable {
         this.cliente = cliente;
     }
 
-    
-    
     public Venta(float descuento, Calendar fecha, float montoTotal, Cliente cliente, List<RelProductoVentas> productos) {
         this.descuento = descuento;
         this.fecha = fecha;

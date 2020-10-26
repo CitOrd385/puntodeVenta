@@ -50,6 +50,7 @@ public class Cliente implements Serializable {
     public Cliente() {
     }
 
+    
     public Cliente(Integer id,String nombre, String direccion, String rfc, String telefono) {
         this.id = id;
         this.direccion = direccion;
