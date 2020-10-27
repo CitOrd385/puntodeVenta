@@ -21,6 +21,7 @@ public class frmClientes extends javax.swing.JDialog {
         initComponents();
         this.clienteDAO = new ClienteDAO();
         this.cargarClientes();
+        setLocationRelativeTo(null);
     }
     
     private void cargarClientes(){

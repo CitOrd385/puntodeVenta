@@ -10,6 +10,7 @@ public class frmBusqueda extends javax.swing.JDialog {
     public frmBusqueda(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")

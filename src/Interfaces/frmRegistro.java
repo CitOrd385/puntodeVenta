@@ -14,6 +14,7 @@ public class frmRegistro extends javax.swing.JDialog {
     public frmRegistro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")

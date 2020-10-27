@@ -15,6 +15,7 @@ public class frmProductos extends javax.swing.JDialog {
         initComponents();
         this.productoDAO = new ProductoDAO();
         this.cargarProductos();
+        setLocationRelativeTo(null);
     }
     
     private void cargarProductos(){
