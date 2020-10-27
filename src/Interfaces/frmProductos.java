@@ -12,9 +12,9 @@ public class frmProductos extends javax.swing.JDialog {
 
     public frmProductos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        initComponents();
         this.productoDAO = new ProductoDAO();
         this.cargarProductos();
-        initComponents();
     }
     
     private void cargarProductos(){
@@ -434,7 +434,7 @@ public class frmProductos extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                frmProductos dialog = new frmProductos(new javax.swing.JFrame(), false);
+                frmProductos dialog = new frmProductos(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

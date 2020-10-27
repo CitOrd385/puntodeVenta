@@ -291,7 +291,7 @@ public class frmRegistro extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                frmRegistro dialog = new frmRegistro(new javax.swing.JFrame(), false);
+                frmRegistro dialog = new frmRegistro(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
