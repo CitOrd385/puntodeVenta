@@ -283,6 +283,12 @@ public class frmProductos extends javax.swing.JDialog {
 
         jLabel1.setText("Búsqueda: ");
 
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+        });
+
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -351,12 +357,20 @@ public class frmProductos extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        this.eliminar();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+        if (this.txtBuscar.getText().length()>0) {
+            this.buscarProductos();
+        }else{
+            this.cargarProductos();
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+        
+    }//GEN-LAST:event_txtBuscarKeyReleased
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -349,7 +349,7 @@ public class frmClientes extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        this.eliminar();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -357,13 +357,15 @@ public class frmClientes extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
-        if (this.txtBuscar.getText().length()>0) {
-            this.buscarClientes();
-        }
+        
     }//GEN-LAST:event_txtBuscarKeyReleased
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+        if (this.txtBuscar.getText().length()>0) {
+            this.buscarClientes();
+        }else{
+            this.cargarClientes();
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
