@@ -1,10 +1,118 @@
 package Interfaces;
+
+import daos.ProductoDAO;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import objetosNegocio.Producto;
+
 public class frmProductos extends javax.swing.JDialog {
+    
+    private ProductoDAO productoDAO;
 
     public frmProductos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.productoDAO = new ProductoDAO();
         initComponents();
     }
+    
+    private void cargarProductos(){
+        ArrayList<Producto> listaProductos = this.productoDAO.consultar();
+        DefaultTableModel modelo = (DefaultTableModel) this.tablaProductos.getModel();
+        modelo.setRowCount(0);
+        for (Producto producto : listaProductos) {
+            Object[] fila = new Object[4];
+            fila[0] = producto.getId();
+            fila[1] = producto.getNombre();
+            fila[2] = producto.getStock();
+            fila[3] = producto.getPrecioActual();
+            modelo.addRow(fila);
+        }
+    }
+    
+    public void limpiar(){
+        this.txtID.setText("");
+        this.txtNombre.setText("");
+        this.txtStock.setText("");
+        this.txtPrecio.setText("");
+    }
+    
+    public void guardar(){
+        String nombre = this.txtNombre.getText();
+        Integer stock = Integer.parseInt(this.txtStock.getText());
+        Float precio = Float.parseFloat(this.txtPrecio.getText());
+        Producto producto = new Producto(nombre, precio, stock);
+        this.productoDAO.agregar(producto);
+        this.cargarProductos();
+        JOptionPane.showInternalMessageDialog(this,"Producto guardado correctamente", 
+                "Informacion", JOptionPane.INFORMATION_MESSAGE);
+        limpiar();
+    }
+    
+    public void editar(){
+        int indiceFilaSeleccionada = this.tablaProductos.getSelectedRow();
+        if (indiceFilaSeleccionada == -1) {
+            JOptionPane.showInternalMessageDialog(this, "Debe seleccionar un producto", 
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+        else{
+            Integer id_producto = (Integer)this.tablaProductos.getValueAt(indiceFilaSeleccionada, 0);
+            Producto producto = this.productoDAO.constultarPorId(id_producto);
+            this.llenarFormulario(producto);
+        }
+    }
+    
+    public void llenarFormulario(Producto producto){
+        this.txtID.setEnabled(true);
+        this.txtID.setEditable(true);
+        this.txtID.setText(producto.getId()+"");
+        this.txtNombre.setText(producto.getNombre());
+        this.txtStock.setText(producto.getStock()+"");
+        this.txtPrecio.setText(producto.getPrecioActual()+"");
+    }
+    
+    public void actualizar(){
+        Integer ID = Integer.parseInt(this.txtID.getText());
+        String nombre = this.txtNombre.getText();
+        Integer stock = Integer.parseInt(this.txtStock.getText());
+        Float precio = Float.parseFloat(this.txtPrecio.getText());
+        Producto producto = new Producto(ID, nombre, precio, stock);
+        this.productoDAO.actualizar(producto);
+        this.cargarProductos();
+        JOptionPane.showInternalMessageDialog(this,"Producto actualizado correctamente", 
+                "Informacion", JOptionPane.INFORMATION_MESSAGE);
+        limpiar();
+    }
+    
+    private void buscarProductos(){
+        String nombre = this.txtBuscar.getText();
+        ArrayList<Producto> productos = new ArrayList<>();
+        DefaultTableModel xmodelo = (DefaultTableModel) this.tablaProductos.getModel();
+        productos = this.productoDAO.buscar(nombre);
+        xmodelo.setRowCount(0);
+        for (Producto producto : productos) {
+            Object[] fila = new Object[4];
+            fila[0] = producto.getId();
+            fila[1] = producto.getNombre();
+            fila[2] = producto.getStock();
+            fila[3] = producto.getPrecioActual();
+            xmodelo.addRow(fila);
+        }
+    }
+    
+    public void eliminar(){
+        int indiceFila = tablaProductos.getSelectedRow();
+         DefaultTableModel clientes = (DefaultTableModel) this.tablaProductos.getModel();
+        if (indiceFila == -1) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un producto", "Información", JOptionPane.ERROR_MESSAGE);
+        } else {
+            clientes.removeRow(indiceFila);
+            int id_producto = (Integer) tablaProductos.getValueAt(indiceFila, 0);
+            //Cliente cliente = clienteDAO.constultarPorId(id_cliente);
+            productoDAO.eliminar(id_producto);
+        }
+    }
+         
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

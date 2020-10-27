@@ -37,7 +37,7 @@ public class frmClientes extends javax.swing.JDialog {
         }
     }
     
-    private void limpiar(){
+    public void limpiar(){
         this.txtID.setText("");
         this.txtNombre.setText("");
         this.txtDireccion.setText("");
@@ -45,7 +45,7 @@ public class frmClientes extends javax.swing.JDialog {
         this.txtTelefono.setText("");
     }
     
-    private void guardar(){
+    public void guardar(){
         String Nombre = this.txtNombre.getText();
         String Direccion = this.txtDireccion.getText();
         String RFC = this.txtRFC.getText();
@@ -71,7 +71,7 @@ public class frmClientes extends javax.swing.JDialog {
         }
     }
      
-     private void llenarFormulario(Cliente cliente){
+     public void llenarFormulario(Cliente cliente){
          this.txtID.setEditable(true);
          this.txtID.setEnabled(true);
          this.txtID.setText(cliente.getId()+"");
@@ -81,7 +81,7 @@ public class frmClientes extends javax.swing.JDialog {
          this.txtTelefono.setText(cliente.getTelefono());
      }
      
-     private void actualizar(){
+     public void actualizar(){
          Integer ID = Integer.parseInt(this.txtID.getText());
          String Nombre = this.txtNombre.getText();
          String Direccion = this.txtDireccion.getText();
