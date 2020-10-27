@@ -13,6 +13,7 @@ public class frmProductos extends javax.swing.JDialog {
     public frmProductos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.productoDAO = new ProductoDAO();
+        this.cargarProductos();
         initComponents();
     }
     
