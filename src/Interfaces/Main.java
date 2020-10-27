@@ -23,6 +23,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        menuPrincipal menu = new menuPrincipal();
+        menu.setVisible(true);
+        
        ClienteDAO clientedao = new ClienteDAO();
        
         
