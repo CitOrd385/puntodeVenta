@@ -5,6 +5,9 @@
  */
 package Interfaces;
 
+import daos.ProductoDAO;
+import objetosNegocio.Producto;
+
 /**
  *
  * @author Citlali Orduño
@@ -18,9 +21,11 @@ public class Main {
         
         menuPrincipal menu = new menuPrincipal();
         menu.setVisible(true);
-        
-       
-        
+//        
+//       Producto producto = new Producto("Paupau", (float)5.50, 25);
+//        ProductoDAO pdao = new ProductoDAO();
+//        pdao.agregar(producto);
+//        
        
        //Cliente cliente = new Cliente("M", "Calandrias 528", "MFOS051412", "6447589446");
        
