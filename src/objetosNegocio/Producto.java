@@ -22,7 +22,7 @@ import javax.persistence.Table;
  * @author Citlali Orduño
  */
 @Entity
-@Table(name="produtos")
+@Table(name="productos")
 public class Producto implements Serializable {
 
     @Id
