@@ -95,7 +95,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         em.getTransaction().begin();
         List<Cliente> clientes;
         if (!nombre.equals("")) {
-            String jpql = String.format("SELECT * FROM puntodeventa.clientes WHERE puntodeventa.clientes.nombre = '%s';", nombre);
+            String jpql = String.format("SELECT * FROM puntodeventa.clientes WHERE puntodeventa.clientes.nombre LIKE '%%"+nombre+"%%'");
             clientes = em.createNativeQuery(jpql, Cliente.class).getResultList();
         } else {
             String jpql = "SELECT * FROM puntodeventa.clientes;";
@@ -105,5 +105,6 @@ public class ClienteDAO extends BaseDAO<Cliente> {
 
         return new ArrayList<>(clientes);
     }
-
+    
+    
 }

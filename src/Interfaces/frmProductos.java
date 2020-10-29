@@ -46,7 +46,7 @@ public class frmProductos extends javax.swing.JDialog {
         Producto producto = new Producto(nombre, precio, stock);
         this.productoDAO.agregar(producto);
         this.cargarProductos();
-        JOptionPane.showInternalMessageDialog(this,"Producto guardado correctamente", 
+        JOptionPane.showMessageDialog(this,"Producto guardado correctamente", 
                 "Informacion", JOptionPane.INFORMATION_MESSAGE);
         limpiar();
     }

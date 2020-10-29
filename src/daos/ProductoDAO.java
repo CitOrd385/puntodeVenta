@@ -90,7 +90,7 @@ public class ProductoDAO extends BaseDAO<Producto> {
         em.getTransaction().begin();
         List<Producto> productos;
         if (!nombre.equals("")) {
-            String jpql = String.format("SELECT * FROM puntodeventa.productos WHERE puntodeventa.productos.nombre = '%s';", nombre);
+            String jpql = String.format("SELECT * FROM puntodeventa.productos WHERE puntodeventa.productos.nombre LIKE '%%"+nombre+"%%'");
             productos = em.createNativeQuery(jpql, Producto.class).getResultList();
         } else {
             String jpql = "SELECT * FROM puntodeventa.productos;";

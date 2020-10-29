@@ -5,14 +5,6 @@
  */
 package Interfaces;
 
-
-import daos.ClienteDAO;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import objetosNegocio.Cliente;
-import objetosNegocio.Producto;
-import objetosNegocio.Venta;
-
 /**
  *
  * @author Citlali Orduño
@@ -27,7 +19,6 @@ public class Main {
         menuPrincipal menu = new menuPrincipal();
         menu.setVisible(true);
         
-       ClienteDAO clientedao = new ClienteDAO();
        
         
        

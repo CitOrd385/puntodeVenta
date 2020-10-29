@@ -54,7 +54,7 @@ public class frmClientes extends javax.swing.JDialog {
         Cliente cliente = new Cliente(Direccion, Nombre, RFC, Telefono);
         this.clienteDAO.agregar(cliente);
         this.cargarClientes();
-        JOptionPane.showInternalMessageDialog(this,"Cliente guardado correctamente", 
+        JOptionPane.showMessageDialog(this,"Cliente guardado correctamente", 
                 "Informacion", JOptionPane.INFORMATION_MESSAGE);
         limpiar();
     }

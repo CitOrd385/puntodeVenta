@@ -5,22 +5,100 @@
  */
 package Interfaces;
 
+import daos.ClienteDAO;
+import daos.ProductoDAO;
+import java.util.ArrayList;
+import javafx.scene.control.ComboBox;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import objetosNegocio.Cliente;
+import objetosNegocio.Producto;
+
 /**
  *
  * @author david
  */
 public class frmRegistro extends javax.swing.JDialog {
 
+    private ProductoDAO productoDAO;
+    private ClienteDAO clienteDAO;
+    
     public frmRegistro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.productoDAO = new ProductoDAO();
+        this.clienteDAO = new ClienteDAO();
+        this.cargarProductos();
+        this.cargarCompras();
+        this.listarClientes();
         setLocationRelativeTo(null);
     }
+    
+    private void cargarProductos(){
+        ArrayList<Producto> listaProductos = this.productoDAO.consultar();
+        DefaultTableModel modelo = (DefaultTableModel) this.tablaProductos.getModel();
+        modelo.setRowCount(0);
+        for (Producto producto : listaProductos) {
+            Object[] fila = new Object[4];
+            fila[0] = producto.getId();
+            fila[1] = producto.getNombre();
+            fila[2] = producto.getStock();
+            fila[3] = producto.getPrecioActual();
+            modelo.addRow(fila);
+        }
+    }
+    
+    public void cargarCompras(){
+        int filaS = this.tablaProductos.getSelectedRow();
+        try {
+            String id,nombre,precio,cantidad;
+            Float monto; 
+        if (filaS==-1) {
+//            JOptionPane.showMessageDialog(null, "Debe seleccionar un producto", "Advertencia",JOptionPane.WARNING_MESSAGE);
+        }
+        else{dialogCantidad.setVisible(true);
+            id = this.tablaProductos.getValueAt(filaS, 0).toString();
+            nombre = this.tablaProductos.getValueAt(filaS, 1).toString();
+            precio = this.tablaProductos.getValueAt(filaS, 2).toString();
+            cantidad = this.txtCantidad.getText();
+            monto = Float.parseFloat(precio) * Integer.parseInt(cantidad);
+            
+            DefaultTableModel modeloCompras = (DefaultTableModel) this.tablaCompra.getModel();
+            String total = String.valueOf(monto);
+            String filas[] = {id,nombre,precio, cantidad, total};
+            modeloCompras.addRow(filas);
+        }
+        } catch (Exception e) {
+        }
+    }
+    
+    public void listarClientes(){
+        DefaultComboBoxModel modelo = (DefaultComboBoxModel)this.cbClientes.getModel();
+        ArrayList<Cliente> listaClientes = this.clienteDAO.consultar();
+        for (Cliente cliente : listaClientes) {
+            Object[] nombre  = new Object[1];
+            nombre[0] = cliente.getNombre();
+            modelo.addElement(nombre);
+        }
+        
+        
+            
+        
+    }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dialogCantidad = new javax.swing.JDialog();
+        jLabel1 = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         bntRegistrar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -39,11 +117,34 @@ public class frmRegistro extends javax.swing.JDialog {
         txtBuscar = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         panelBuscador = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaProductos = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         lblProductos = new javax.swing.JLabel();
         panelProductos = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaCompra = new javax.swing.JTable();
+
+        jLabel1.setText("Cantidad");
+
+        javax.swing.GroupLayout dialogCantidadLayout = new javax.swing.GroupLayout(dialogCantidad.getContentPane());
+        dialogCantidad.getContentPane().setLayout(dialogCantidadLayout);
+        dialogCantidadLayout.setHorizontalGroup(
+            dialogCantidadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogCantidadLayout.createSequentialGroup()
+                .addContainerGap(73, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44))
+        );
+        dialogCantidadLayout.setVerticalGroup(
+            dialogCantidadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogCantidadLayout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addGroup(dialogCantidadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(108, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -134,7 +235,7 @@ public class frmRegistro extends javax.swing.JDialog {
 
         btnBuscar.setText("Buscar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -157,7 +258,15 @@ public class frmRegistro extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        panelBuscador.setViewportView(jTable1);
+        tablaProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaProductosMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tablaProductosMousePressed(evt);
+            }
+        });
+        panelBuscador.setViewportView(tablaProductos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -187,7 +296,7 @@ public class frmRegistro extends javax.swing.JDialog {
 
         lblProductos.setText("Productos Seleccionados");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaCompra.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -210,7 +319,12 @@ public class frmRegistro extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        panelProductos.setViewportView(jTable2);
+        tablaCompra.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaCompraMouseClicked(evt);
+            }
+        });
+        panelProductos.setViewportView(tablaCompra);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -264,6 +378,18 @@ public class frmRegistro extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void tablaCompraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCompraMouseClicked
+        
+    }//GEN-LAST:event_tablaCompraMouseClicked
+
+    private void tablaProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProductosMouseClicked
+        
+    }//GEN-LAST:event_tablaProductosMouseClicked
+
+    private void tablaProductosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProductosMousePressed
+        
+    }//GEN-LAST:event_tablaProductosMousePressed
+
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -310,11 +436,11 @@ public class frmRegistro extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> cbClientes;
+    private javax.swing.JDialog dialogCantidad;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblBuscador;
     private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblDescuento;
@@ -324,7 +450,10 @@ public class frmRegistro extends javax.swing.JDialog {
     private javax.swing.JLabel lblTotal;
     private javax.swing.JScrollPane panelBuscador;
     private javax.swing.JScrollPane panelProductos;
+    private javax.swing.JTable tablaCompra;
+    private javax.swing.JTable tablaProductos;
     private javax.swing.JTextField txtBuscar;
+    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtDescuento;
     private javax.swing.JTextField txtSubtotal;
     private javax.swing.JTextField txtTotal;
