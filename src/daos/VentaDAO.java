@@ -107,4 +107,22 @@ public class VentaDAO extends BaseDAO<Venta>{
         return new ArrayList<>(ventas);
     }
     
+    public List<Venta> consultarVentasPorRango(String fechaInicio, String fechaFin, Integer id) {
+        EntityManager em = this.getEntityManager();
+        em.getTransaction().begin();
+
+        List<Venta> ventas;
+        if (id > -1) {
+            String jpql = String.format("SELECT * FROM punto_venta.ventas WHERE punto_venta.ventas.fecha >= '%s' and punto_venta.ventas.fecha <= '%s'"
+                    + " and punto_venta.ventas.idCliente = %d ;", fechaInicio, fechaFin, id);
+            ventas = em.createNativeQuery(jpql, Venta.class).getResultList();
+        } else {
+            String jpql = String.format("SELECT * FROM punto_venta.ventas WHERE punto_venta.ventas.fecha >= '%s' and punto_venta.ventas.fecha <= '%s';", fechaInicio, fechaFin, id);
+            ventas = em.createNativeQuery(jpql, Venta.class).getResultList();
+        }
+        em.getTransaction().commit();
+        return ventas;
+
+    }
+    
 }
