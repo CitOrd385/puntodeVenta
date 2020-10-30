@@ -55,7 +55,7 @@ public class ProductoDAO extends BaseDAO<Producto> {
     public void actualizar(Producto producto) {
        EntityManager em = this.getEntityManager();
        
-       Producto productoX= em.find(Producto.class, producto);
+       Producto productoX= em.find(Producto.class, producto.getId());
        if(productoX != null ){
            productoX.setNombre(producto.getNombre());
            productoX.setPrecioActual(producto.getPrecioActual());

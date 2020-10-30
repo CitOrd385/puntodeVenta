@@ -31,7 +31,7 @@ public class VentaDAO extends BaseDAO<Venta>{
        EntityManager em= this.getEntityManager();
        em.getTransaction().begin();
        
-       Query consulta = em.createQuery("SELECT P FROM Producto p ");
+       Query consulta = em.createQuery("SELECT V FROM Venta v ");
         em.getTransaction().begin();
 
         List<Venta> ventas= consulta.getResultList();
@@ -55,7 +55,7 @@ public class VentaDAO extends BaseDAO<Venta>{
     public void actualizar(Venta venta) {
          EntityManager em = this.getEntityManager();
          
-         Venta ventaX= em.find(Venta.class, venta);
+         Venta ventaX= em.find(Venta.class, venta.getId());
          
          if(ventaX != null){
              ventaX.setFecha(venta.getFecha());
