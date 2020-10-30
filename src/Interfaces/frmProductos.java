@@ -26,8 +26,8 @@ public class frmProductos extends javax.swing.JDialog {
             Object[] fila = new Object[4];
             fila[0] = producto.getId();
             fila[1] = producto.getNombre();
-            fila[2] = producto.getStock();
-            fila[3] = producto.getPrecioActual();
+            fila[3] = producto.getStock();
+            fila[2] = producto.getPrecioActual();
             modelo.addRow(fila);
         }
     }
