@@ -8,6 +8,7 @@ package Interfaces;
 import daos.ClienteDAO;
 import daos.ProductoDAO;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.control.ComboBox;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -35,6 +36,7 @@ public class frmRegistro extends javax.swing.JDialog {
         this.clienteDAO = new ClienteDAO();
         this.cargarProductos();
         setLocationRelativeTo(null);
+        cargarCombo();
         Productos.setLocationRelativeTo(null);
     }
     
@@ -66,6 +68,18 @@ public class frmRegistro extends javax.swing.JDialog {
             fila[3] = producto.getPrecioActual();
             xmodelo.addRow(fila);
         }
+    }
+    
+    public void cargarCombo() {
+        cbClientes.removeAllItems();
+        List<Cliente> clientes = this.clienteDAO.consultar();
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        modelo.addElement("Todos");
+        for (Cliente cliente : clientes) {
+            modelo.addElement(cliente);
+        }
+
+        this.cbClientes.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
