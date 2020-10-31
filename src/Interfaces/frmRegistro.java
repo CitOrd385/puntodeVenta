@@ -312,6 +312,11 @@ public class frmRegistro extends javax.swing.JDialog {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         lblTotal.setText("Total");
 
@@ -581,6 +586,10 @@ public class frmRegistro extends javax.swing.JDialog {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.limpiarFormulario();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
