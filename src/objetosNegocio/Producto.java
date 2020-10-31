@@ -78,9 +78,6 @@ public class Producto implements Serializable {
         this.ventas = ventas;
     }
     
-    
-    
-    
     public Integer getId() {
         return id;
     }
@@ -113,9 +110,13 @@ public class Producto implements Serializable {
         this.stock = stock;
     }
 
-   
-    
-    
+    public List<RelProductoVentas> getVentas() {
+        return ventas;
+    }
+
+    public void setVentas(List<RelProductoVentas> ventas) {
+        this.ventas = ventas;
+    }
 
     @Override
     public int hashCode() {

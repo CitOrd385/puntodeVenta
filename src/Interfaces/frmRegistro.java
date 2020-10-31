@@ -7,6 +7,7 @@ package Interfaces;
 
 import daos.ClienteDAO;
 import daos.ProductoDAO;
+import daos.RelProductoVentasDAO;
 import daos.VentaDAO;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +25,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import objetosNegocio.Cliente;
 import objetosNegocio.Producto;
+import objetosNegocio.RelProductoVentas;
 import objetosNegocio.Venta;
 
 /**
@@ -41,8 +43,7 @@ public class frmRegistro extends javax.swing.JDialog {
 
     static float total;
     float subtotal, Desc;
-    
-    
+
     public frmRegistro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -52,10 +53,10 @@ public class frmRegistro extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         cargarCombo();
         Productos.setLocationRelativeTo(null);
-        
-        this.total=0;
-        this.subtotal=0;
-        this.Desc=0;
+
+        this.total = 0;
+        this.subtotal = 0;
+        this.Desc = 0;
         this.tablaCompra.getTableHeader().setReorderingAllowed(false);
         this.tablaRProductos.getTableHeader().setReorderingAllowed(false);
         DefaultTableCellRenderer alinear = new DefaultTableCellRenderer();
@@ -64,8 +65,7 @@ public class frmRegistro extends javax.swing.JDialog {
         this.tablaRProductos.getColumnModel().getColumn(1).setCellRenderer(alinear);
         this.tablaRProductos.getColumnModel().getColumn(2).setCellRenderer(alinear);
         this.tablaRProductos.getColumnModel().getColumn(3).setCellRenderer(alinear);
-        
-      
+
     }
 
     private void cargarProductos() {
@@ -123,12 +123,36 @@ public class frmRegistro extends javax.swing.JDialog {
             } else {
                 venta.setDescuento(0.0f);
             }
-            
+
             venta.setMontoTotal(Float.parseFloat(txtTotal.getText()));
             this.ventaDAO.agregar(venta);
+            
+            List<RelProductoVentas> relaciones = new ArrayList<>();
+
+            for (int i = 0; i < productosSeleccionados.size(); i++) {
+                RelProductoVentas relacion = new RelProductoVentas(productosSeleccionados.get(i), venta,
+                        cantidades.get(i),productosSeleccionados.get(i).getPrecioActual(), 
+                        (productosSeleccionados.get(i).getPrecioActual() * cantidades.get(i)));
+                relaciones.add(relacion);
+            }
+            
+            RelProductoVentasDAO relPV= new RelProductoVentasDAO();
+            for (RelProductoVentas relacione : relaciones) {
+                relPV.insertarRelacion(relacione);
+            }
+            System.out.println("Si entró la venta"); 
         }
     }
 
+   private void limpiarFormulario() {
+        txtSubtotal.setText("");
+        txtDescuento.setText("");
+        txtTotal.setText("");
+        txtBuscar.setText("");
+    }
+   
+   
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -160,6 +184,7 @@ public class frmRegistro extends javax.swing.JDialog {
         panelProductosSeleccionados = new javax.swing.JScrollPane();
         tablaCompra = new javax.swing.JTable();
         btnSalir = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         Productos.setMinimumSize(new java.awt.Dimension(570, 300));
 
@@ -430,14 +455,24 @@ public class frmRegistro extends javax.swing.JDialog {
             }
         });
 
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 33, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnSalir)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalir))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -450,8 +485,13 @@ public class frmRegistro extends javax.swing.JDialog {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnSalir)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSalir))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEliminar)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -491,20 +531,23 @@ public class frmRegistro extends javax.swing.JDialog {
 
                 Object filas[] = {id, nombre, precio, cantidad, monto};
                 modeloCompras.addRow(filas);
-                
+
                 suma = precio * cantidad;
                 subtotal = subtotal + suma;
                 if (this.txtDescuento.getText().contentEquals("")) {
                     des = 0;
-                    Desc = (subtotaldes)/100;
+                    Desc = (subtotal) / 100;
                     total = subtotal;
-                }else{
+                } else {
                     des = Integer.parseInt(this.txtDescuento.getText());
-                    Desc = (subtotaldes)/100;
+                    Desc = (subtotal) / 100;
                     total = subtotal - Desc;
-                
+
+                }
             }
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al registrar",
+                    "Informacion", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -526,12 +569,18 @@ public class frmRegistro extends javax.swing.JDialog {
     }//GEN-LAST:event_txtDescuentoActionPerformed
 
     private void bntRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntRegistrarActionPerformed
-
+        this.insertarVenta();
+        this.limpiarFormulario();
+       
     }//GEN-LAST:event_bntRegistrarActionPerformed
 
     private void cbClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbClientesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbClientesActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -579,6 +628,7 @@ public class frmRegistro extends javax.swing.JDialog {
     private javax.swing.JButton btnAgregarProductos;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> cbClientes;
     private javax.swing.JLabel jLabel1;

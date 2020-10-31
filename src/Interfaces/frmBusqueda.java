@@ -5,12 +5,33 @@
  */
 package Interfaces;
 
+import daos.ClienteDAO;
+import daos.VentaDAO;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import objetosNegocio.Cliente;
+import objetosNegocio.RelProductoVentas;
+import objetosNegocio.Venta;
+
 public class frmBusqueda extends javax.swing.JDialog {
 
+        private ClienteDAO clientedao;
+        private VentaDAO ventadao;
+    
     public frmBusqueda(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        this.clientedao= new ClienteDAO();
+        this.ventadao= new VentaDAO();
+        cargarCombo();
+        cargarJCalendar();
     }
 
     @SuppressWarnings("unchecked")
@@ -19,7 +40,7 @@ public class frmBusqueda extends javax.swing.JDialog {
 
         pBV = new javax.swing.JPanel();
         panelBusqueda = new javax.swing.JScrollPane();
-        tablaBusquedas = new javax.swing.JTable();
+        tablaVentas = new javax.swing.JTable();
         btnBuscar = new javax.swing.JButton();
         lblCliente = new javax.swing.JLabel();
         lblFechas = new javax.swing.JLabel();
@@ -47,7 +68,13 @@ public class frmBusqueda extends javax.swing.JDialog {
 
         pBV.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscador de ventas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
 
-        tablaBusquedas.setModel(new javax.swing.table.DefaultTableModel(
+        panelBusqueda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelBusquedaMouseClicked(evt);
+            }
+        });
+
+        tablaVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -70,9 +97,19 @@ public class frmBusqueda extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        panelBusqueda.setViewportView(tablaBusquedas);
+        tablaVentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaVentasMouseClicked(evt);
+            }
+        });
+        panelBusqueda.setViewportView(tablaVentas);
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         lblCliente.setText("Cliente:");
 
@@ -283,6 +320,128 @@ public class frmBusqueda extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void panelBusquedaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelBusquedaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_panelBusquedaMouseClicked
+
+    private void tablaVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaVentasMouseClicked
+        this.cargarFormulario();
+        this.cargarProductos();
+    }//GEN-LAST:event_tablaVentasMouseClicked
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        this.cargarVentas();
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    public void cargarProductos() {
+
+        DefaultTableModel modelo = (DefaultTableModel) tablaProductos.getModel();
+        modelo.setRowCount(0);
+        int idVenta = Integer.parseInt(txtID2.getText());
+        Venta venta = ventadao.constultarPorId(idVenta);
+        List<RelProductoVentas> productos = venta.getProductos();
+
+        for (RelProductoVentas producto : productos) {
+            Object[] lista = new Object[]{
+                producto.getProducto().getId(),
+                producto.getProducto().getNombre(),
+                producto.getProducto().getPrecioActual(),
+                producto.getCantidad(),
+                producto.getImporte()
+            };
+            modelo.addRow(lista);
+        }
+
+    }
+    
+    public void cargarCombo() {
+        cbClientes.removeAllItems();
+        List<Cliente> clientes = this.clientedao.consultar();
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        modelo.addElement("Todos");
+        for (Cliente cliente : clientes) {
+            modelo.addElement(cliente);
+        }
+
+        this.cbClientes.setModel(modelo);
+    }
+    
+    private void cargarFormulario() {
+        int fila = this.tablaVentas.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una venta", "Información", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            DefaultTableModel modelo = (DefaultTableModel) this.tablaVentas.getModel();
+            int idVenta = (int) modelo.getValueAt(fila, 0);
+            Venta venta = ventadao.constultarPorId(idVenta);
+            if (venta != null) {
+                txtID2.setText(String.valueOf(idVenta));
+                int idCliente = (int) modelo.getValueAt(fila, 1);
+                txtCliente2.setText(String.valueOf(idCliente));
+                float subTotal = (float) modelo.getValueAt(fila, 3);
+                txtSubtotal2.setText(String.valueOf(subTotal));
+                String descuento = (String) modelo.getValueAt(fila, 4);
+                txtDescuento2.setText(descuento);
+                float total = (float) modelo.getValueAt(fila, 5);
+                txtTotal2.setText(String.valueOf(total));
+
+            }
+        }
+    }
+    
+    public void cargarJCalendar() {
+        Date fecha1 = new Date();
+        fechaDesde.setDate(fecha1);
+        
+        Date fecha2 = new Date();
+        fechaHasta.setDate(fecha2);
+    }
+    
+    public void cargarVentas(){
+        String format= "yyyy-MM-dd";
+        if(fechaDesde.getDate() != null && fechaHasta.getDate()!= null){
+          SimpleDateFormat sdf= new SimpleDateFormat(format);  
+          String fechaInicio= sdf.format(this.fechaDesde.getDate());
+          String fechaFin= sdf.format(this.fechaHasta.getDate());
+          Integer idCliente;
+          try{
+              Cliente cliente = (Cliente) cbClientes.getSelectedItem();
+               idCliente= cliente.getId();
+              
+          }catch(Exception e){
+              idCliente= -1;
+          }
+          List<Venta> ventas= this.ventadao.consultarVentasPorRango(fechaInicio, fechaFin, idCliente);
+          
+          if(ventas != null){
+              DefaultTableModel modelo = (DefaultTableModel) tablaVentas.getModel();
+                modelo.setRowCount(0);
+                
+                for (Venta venta : ventas) {
+                  String fechaVenta = sdf.format(venta.getFecha());
+                    float subTotal = 0f;
+                  
+                    for (int i = 0; i < venta.getProductos().size(); i++) {
+                        subTotal += venta.getProductos().get(i).getPrecio() * venta.getProductos().get(i).getCantidad();
+                    }
+                    
+                    Object[] lista = new Object[]{
+                        venta.getId(),
+                        venta.getCliente().getId(),
+                        fechaVenta,
+                        subTotal,
+                        venta.getDescuento() + "%",
+                        venta.getMontoTotal()
+                    };
+
+                    modelo.addRow(lista);
+              }
+                
+          }
+          
+        }
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -330,45 +489,23 @@ public class frmBusqueda extends javax.swing.JDialog {
     private com.toedter.calendar.JDateChooser fechaHasta;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblCliente;
-    private javax.swing.JLabel lblCliente2;
-    private javax.swing.JLabel lblCliente3;
     private javax.swing.JLabel lblCliente4;
-    private javax.swing.JLabel lblDescuento;
-    private javax.swing.JLabel lblDescuento1;
     private javax.swing.JLabel lblDescuento2;
     private javax.swing.JLabel lblFechas;
     private javax.swing.JLabel lblFechas1;
-    private javax.swing.JLabel lblSubtotal;
-    private javax.swing.JLabel lblSubtotal1;
     private javax.swing.JLabel lblSubtotal2;
-    private javax.swing.JLabel lblTotal;
-    private javax.swing.JLabel lblTotal1;
     private javax.swing.JLabel lblTotal2;
-    private javax.swing.JLabel lblid;
-    private javax.swing.JLabel lblid1;
     private javax.swing.JLabel lblid2;
     private javax.swing.JPanel pBV;
-    private javax.swing.JPanel pDV;
-    private javax.swing.JPanel pDV1;
     private javax.swing.JPanel pDV2;
     private javax.swing.JPanel pP;
     private javax.swing.JScrollPane panelBusqueda;
-    private javax.swing.JTable tablaBusquedas;
     private javax.swing.JTable tablaProductos;
-    private javax.swing.JTextField txtCliente;
-    private javax.swing.JTextField txtCliente1;
+    private javax.swing.JTable tablaVentas;
     private javax.swing.JTextField txtCliente2;
-    private javax.swing.JTextField txtDescuento;
-    private javax.swing.JTextField txtDescuento1;
     private javax.swing.JTextField txtDescuento2;
-    private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtID1;
     private javax.swing.JTextField txtID2;
-    private javax.swing.JTextField txtSubtotal;
-    private javax.swing.JTextField txtSubtotal1;
     private javax.swing.JTextField txtSubtotal2;
-    private javax.swing.JTextField txtTotal;
-    private javax.swing.JTextField txtTotal1;
     private javax.swing.JTextField txtTotal2;
     // End of variables declaration//GEN-END:variables
 }

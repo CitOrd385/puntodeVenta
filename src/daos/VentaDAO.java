@@ -113,11 +113,13 @@ public class VentaDAO extends BaseDAO<Venta>{
 
         List<Venta> ventas;
         if (id > -1) {
-            String jpql = String.format("SELECT * FROM punto_venta.ventas WHERE punto_venta.ventas.fecha >= '%s' and punto_venta.ventas.fecha <= '%s'"
-                    + " and punto_venta.ventas.idCliente = %d ;", fechaInicio, fechaFin, id);
+            String jpql = String.format("SELECT * FROM puntodeventa.ventas WHERE "
+                    + "puntodeventa.ventas.fecha >= '%s' AND puntodeventa.ventas.fecha <= '%s'"
+                    + " and puntodeventa.ventas.idCliente = %d ;", fechaInicio, fechaFin, id);
             ventas = em.createNativeQuery(jpql, Venta.class).getResultList();
         } else {
-            String jpql = String.format("SELECT * FROM punto_venta.ventas WHERE punto_venta.ventas.fecha >= '%s' and punto_venta.ventas.fecha <= '%s';", fechaInicio, fechaFin, id);
+            String jpql = String.format("SELECT * FROM puntodeventa.ventas WHERE"
+                    + " puntodeventa.ventas.fecha >= '%s' AND puntodeventa.ventas.fecha <= '%s';", fechaInicio, fechaFin, id);
             ventas = em.createNativeQuery(jpql, Venta.class).getResultList();
         }
         em.getTransaction().commit();
