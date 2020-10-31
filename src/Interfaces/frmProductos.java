@@ -423,7 +423,7 @@ public class frmProductos extends javax.swing.JDialog {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        this.actualizar();
+        this.editar();
         this.limpiar();
     }//GEN-LAST:event_btnEditarActionPerformed
 

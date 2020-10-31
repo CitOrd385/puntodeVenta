@@ -7,7 +7,11 @@ package Interfaces;
 
 import daos.ClienteDAO;
 import daos.ProductoDAO;
+import daos.VentaDAO;
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import java.util.GregorianCalendar;
 import java.util.List;
 import javafx.scene.control.ComboBox;
 import javax.swing.ComboBoxModel;
@@ -15,9 +19,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import objetosNegocio.Cliente;
 import objetosNegocio.Producto;
+import objetosNegocio.Venta;
 
 /**
  *
@@ -28,7 +35,14 @@ public class frmRegistro extends javax.swing.JDialog {
     private ProductoDAO productoDAO;
     private ClienteDAO clienteDAO;
     DefaultTableModel modeloCompras;
-    ;
+    private VentaDAO ventaDAO;
+    private List<Producto> productosSeleccionados;
+    private List<Integer> cantidades;
+
+    static float total;
+    float subtotal, Desc;
+    
+    
     public frmRegistro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -38,9 +52,23 @@ public class frmRegistro extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         cargarCombo();
         Productos.setLocationRelativeTo(null);
+        
+        this.total=0;
+        this.subtotal=0;
+        this.Desc=0;
+        this.tablaCompra.getTableHeader().setReorderingAllowed(false);
+        this.tablaRProductos.getTableHeader().setReorderingAllowed(false);
+        DefaultTableCellRenderer alinear = new DefaultTableCellRenderer();
+        alinear.setHorizontalAlignment(SwingConstants.CENTER);
+        this.tablaRProductos.getColumnModel().getColumn(0).setCellRenderer(alinear);
+        this.tablaRProductos.getColumnModel().getColumn(1).setCellRenderer(alinear);
+        this.tablaRProductos.getColumnModel().getColumn(2).setCellRenderer(alinear);
+        this.tablaRProductos.getColumnModel().getColumn(3).setCellRenderer(alinear);
+        
+      
     }
-    
-    private void cargarProductos(){
+
+    private void cargarProductos() {
         ArrayList<Producto> listaProductos = this.productoDAO.consultar();
         DefaultTableModel modelo = (DefaultTableModel) this.tablaRProductos.getModel();
         modelo.setRowCount(0);
@@ -53,8 +81,8 @@ public class frmRegistro extends javax.swing.JDialog {
             modelo.addRow(fila);
         }
     }
-    
-    private void buscarProductos(){
+
+    private void buscarProductos() {
         String nombre = this.txtBuscar.getText();
         ArrayList<Producto> productos = new ArrayList<>();
         DefaultTableModel xmodelo = (DefaultTableModel) this.tablaRProductos.getModel();
@@ -69,7 +97,7 @@ public class frmRegistro extends javax.swing.JDialog {
             xmodelo.addRow(fila);
         }
     }
-    
+
     public void cargarCombo() {
         cbClientes.removeAllItems();
         List<Cliente> clientes = this.clienteDAO.consultar();
@@ -80,6 +108,25 @@ public class frmRegistro extends javax.swing.JDialog {
         }
 
         this.cbClientes.setModel(modelo);
+    }
+
+    public void insertarVenta() {
+        if (!txtSubtotal.getText().equals("") && !txtTotal.getText().equals("")
+                && productosSeleccionados.size() > 0 && cbClientes.getSelectedItem() != null) {
+            Venta venta = new Venta();
+            Calendar fecha = new GregorianCalendar();
+            venta.setFecha(fecha);
+            Cliente cliente = (Cliente) cbClientes.getSelectedItem();
+            venta.setCliente(cliente);
+            if (!txtDescuento.getText().equals("")) {
+                venta.setDescuento(Float.parseFloat(txtDescuento.getText()));
+            } else {
+                venta.setDescuento(0.0f);
+            }
+            
+            venta.setMontoTotal(Float.parseFloat(txtTotal.getText()));
+            this.ventaDAO.agregar(venta);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -233,10 +280,21 @@ public class frmRegistro extends javax.swing.JDialog {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detalles de ventas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
 
         bntRegistrar.setText("Registrar");
+        bntRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntRegistrarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
 
         lblTotal.setText("Total");
+
+        txtDescuento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDescuentoActionPerformed(evt);
+            }
+        });
 
         lblSubtotal.setText("Subtotal");
 
@@ -245,6 +303,11 @@ public class frmRegistro extends javax.swing.JDialog {
         lblCliente.setText("Cliente");
 
         cbClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        cbClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbClientesActionPerformed(evt);
+            }
+        });
 
         btnAgregarProductos.setText("Agregar al carrito");
         btnAgregarProductos.addActionListener(new java.awt.event.ActionListener() {
@@ -400,36 +463,46 @@ public class frmRegistro extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void tablaCompraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCompraMouseClicked
-        
+
     }//GEN-LAST:event_tablaCompraMouseClicked
 
     private void tablaRProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaRProductosMouseClicked
-        
+
     }//GEN-LAST:event_tablaRProductosMouseClicked
 
     private void tablaRProductosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaRProductosMousePressed
-        
+
     }//GEN-LAST:event_tablaRProductosMousePressed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         int filaS = tablaRProductos.getSelectedRow();
         try {
-            
-            if (filaS==-1) {
-                JOptionPane.showMessageDialog(null, "Debe seleccionar un producto", "Advertencia",JOptionPane.WARNING_MESSAGE);
-            }
-            else{
+            float suma;
+            int des;
+            if (filaS == -1) {
+                JOptionPane.showMessageDialog(null, "Debe seleccionar un producto", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            } else {
                 int id = Integer.parseInt(this.tablaRProductos.getValueAt(filaS, 0).toString());
                 String nombre = this.tablaRProductos.getValueAt(filaS, 1).toString();
                 float precio = Float.parseFloat(this.tablaRProductos.getValueAt(filaS, 2).toString());
                 int cantidad = Integer.parseInt(this.txtCantidad.getText());
                 float monto = precio * cantidad;
                 modeloCompras = (DefaultTableModel) this.tablaCompra.getModel();
-                
-                Object filas[] = {id, nombre, precio,cantidad,monto};
+
+                Object filas[] = {id, nombre, precio, cantidad, monto};
                 modeloCompras.addRow(filas);
-                Productos.setVisible(false);
-//                setVisible(true);
+                
+                suma = precio * cantidad;
+                subtotal = subtotal + suma;
+                if (this.txtDescuento.getText().contentEquals("")) {
+                    des = 0;
+                    Desc = (subtotaldes)/100;
+                    total = subtotal;
+                }else{
+                    des = Integer.parseInt(this.txtDescuento.getText());
+                    Desc = (subtotaldes)/100;
+                    total = subtotal - Desc;
+                
             }
         } catch (Exception e) {
         }
@@ -441,14 +514,25 @@ public class frmRegistro extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAgregarProductosActionPerformed
 
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
-        if (this.txtBuscar.getText().length()>0) {
+        if (this.txtBuscar.getText().length() > 0) {
             this.buscarProductos();
-        }else{
+        } else {
             this.cargarProductos();
         }
     }//GEN-LAST:event_txtBuscarActionPerformed
 
-    
+    private void txtDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescuentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDescuentoActionPerformed
+
+    private void bntRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntRegistrarActionPerformed
+
+    }//GEN-LAST:event_bntRegistrarActionPerformed
+
+    private void cbClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbClientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbClientesActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
