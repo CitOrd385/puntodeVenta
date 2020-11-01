@@ -42,8 +42,10 @@ public class Producto implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto")
     private List<RelProductoVentas> ventas;
 
+    public Producto(Integer id) {
+        this.id = id;
+    }
     
-
     public Producto() {
       this.ventas = new ArrayList<>();
     }

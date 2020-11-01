@@ -7,18 +7,12 @@ package Interfaces;
 
 import daos.ClienteDAO;
 import daos.ProductoDAO;
-import daos.RelProductoVentasDAO;
 import daos.VentaDAO;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import java.util.GregorianCalendar;
 import java.util.List;
-import javafx.scene.control.ComboBox;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -107,40 +101,43 @@ public class frmRegistro extends javax.swing.JDialog {
             modelo.addElement(cliente);
         }
 
-        this.cbClientes.setModel(modelo);
+//        this.cbClientes.setModel(modelo);
     }
 
     public void insertarVenta() {
-        if (!txtSubtotal.getText().contentEquals("") && !txtTotal.getText().contentEquals("")
-                && tablaCompra.getRowCount() >= 0 && cbClientes.getSelectedItem() != null) {
-            Venta venta = new Venta();
-            Calendar fecha = new GregorianCalendar(GregorianCalendar.YEAR,GregorianCalendar.MONTH+1,GregorianCalendar.DAY_OF_MONTH);
-            venta.setFecha(fecha);
-            Cliente cliente = (Cliente) cbClientes.getSelectedItem();
-            venta.setCliente(cliente);
-            if (!txtDescuento.getText().equals("")) {
-                venta.setDescuento(Float.parseFloat(txtDescuento.getText()));
-            } else {
-                venta.setDescuento(0.0f);
-            }
-
-            venta.setMontoTotal(Float.parseFloat(txtTotal.getText()));
-            this.ventaDAO.agregar(venta);
-
-            List<RelProductoVentas> relaciones = new ArrayList<>();
-
-            for (int i = 0; i < productosSeleccionados.size(); i++) {
-                RelProductoVentas relacion = new RelProductoVentas(productosSeleccionados.get(i), venta,
-                        cantidades.get(i), productosSeleccionados.get(i).getPrecioActual(),
-                        (productosSeleccionados.get(i).getPrecioActual() * cantidades.get(i)));
-                relaciones.add(relacion);
-            }
-
-            RelProductoVentasDAO relPV = new RelProductoVentasDAO();
-            for (RelProductoVentas relacione : relaciones) {
-                relPV.insertarRelacion(relacione);
-            }
+        try {
+            int numFilas = tablaCompra.getRowCount();
+            float descuento=0;
+            if (!txtSubtotal.getText().contentEquals("") && !txtTotal.getText().contentEquals("")
+                    && !productosSeleccionados.isEmpty() && cbClientes.getSelectedItem() != null) {
+                Calendar fecha = Calendar.getInstance();
+                Cliente cliente = (Cliente) cbClientes.getSelectedItem();
+                if (this.txtDescuento.getText().contentEquals("")) {
+                    descuento = 0;
+                } else {
+                    descuento = Integer.parseInt(this.txtDescuento.getText());
+                }
+                float montoT = Float.parseFloat(this.txtTotal.getText());
+                float sub = Float.parseFloat(this.txtSubtotal.getText());
+                int cantidadP = Integer.parseInt(this.txtCantidad.getText());
+                
+                
+                Producto prod;
+                Venta venta;
+                RelProductoVentas rel;
+                
+                for (int i = 0; i < productosSeleccionados.size(); i++) {
+                    prod = new Producto(productosSeleccionados.get(i).getId());
+                    venta = new Venta(descuento, fecha, montoT, cliente);
+                    float precioP = Float.parseFloat(this.tablaCompra.getValueAt(i, 2).toString());
+                    float importe = cantidadP * precioP;
+                    rel = new RelProductoVentas(prod, venta, cantidadP, precioP, importe);
+                }
+                
+   
             System.out.println("Si entró la venta");
+        }
+        } catch (Exception e) {
         }
     }
     
@@ -150,7 +147,8 @@ public class frmRegistro extends javax.swing.JDialog {
             float suma;
             int des;
             if (filaS == -1) {
-                JOptionPane.showMessageDialog(null, "Debe seleccionar un producto", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Debe seleccionar un producto", 
+                        "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
                 int id = Integer.parseInt(this.tablaRProductos.getValueAt(filaS, 0).toString());
                 String nombre = this.tablaRProductos.getValueAt(filaS, 1).toString();
