@@ -7,6 +7,7 @@ package Interfaces;
 
 import daos.ClienteDAO;
 import daos.ProductoDAO;
+import daos.RelProductoVentasDAO;
 import daos.VentaDAO;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -101,45 +102,10 @@ public class frmRegistro extends javax.swing.JDialog {
             modelo.addElement(cliente);
         }
 
-//        this.cbClientes.setModel(modelo);
+        this.cbClientes.setModel(modelo);
     }
 
-    public void insertarVenta() {
-        try {
-            int numFilas = tablaCompra.getRowCount();
-            float descuento=0;
-            if (!txtSubtotal.getText().contentEquals("") && !txtTotal.getText().contentEquals("")
-                    && !productosSeleccionados.isEmpty() && cbClientes.getSelectedItem() != null) {
-                Calendar fecha = Calendar.getInstance();
-                Cliente cliente = (Cliente) cbClientes.getSelectedItem();
-                if (this.txtDescuento.getText().contentEquals("")) {
-                    descuento = 0;
-                } else {
-                    descuento = Integer.parseInt(this.txtDescuento.getText());
-                }
-                float montoT = Float.parseFloat(this.txtTotal.getText());
-                float sub = Float.parseFloat(this.txtSubtotal.getText());
-                int cantidadP = Integer.parseInt(this.txtCantidad.getText());
-                
-                
-                Producto prod;
-                Venta venta;
-                RelProductoVentas rel;
-                
-                for (int i = 0; i < productosSeleccionados.size(); i++) {
-                    prod = new Producto(productosSeleccionados.get(i).getId());
-                    venta = new Venta(descuento, fecha, montoT, cliente);
-                    float precioP = Float.parseFloat(this.tablaCompra.getValueAt(i, 2).toString());
-                    float importe = cantidadP * precioP;
-                    rel = new RelProductoVentas(prod, venta, cantidadP, precioP, importe);
-                }
-                
-   
-            System.out.println("Si entró la venta");
-        }
-        } catch (Exception e) {
-        }
-    }
+    
     
     public void agregarProductos(){
         int filaS = tablaRProductos.getSelectedRow();
@@ -153,10 +119,13 @@ public class frmRegistro extends javax.swing.JDialog {
                 int id = Integer.parseInt(this.tablaRProductos.getValueAt(filaS, 0).toString());
                 String nombre = this.tablaRProductos.getValueAt(filaS, 1).toString();
                 float precio = Float.parseFloat(this.tablaRProductos.getValueAt(filaS, 2).toString());
+                int stock = Integer.parseInt(this.tablaRProductos.getValueAt(filaS, 3).toString());
                 int cantidad = Integer.parseInt(this.txtCantidad.getText());
                 float monto = precio * cantidad;
                 modeloCompras = (DefaultTableModel) this.tablaCompra.getModel();
-
+                
+                
+                
                 Object filas[] = {id, nombre, precio, cantidad, monto};
                 modeloCompras.addRow(filas);
 
@@ -172,10 +141,51 @@ public class frmRegistro extends javax.swing.JDialog {
                     total = subtotal - Desc;
                 }
                 this.txtCantidad.setText("");
+                Producto op = new Producto(id, nombre, precio, stock);
+                List<Producto> originalList = this.productoDAO.consultar();
+                productosSeleccionados.add(op);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al registrar",
-                    "Informacion", JOptionPane.INFORMATION_MESSAGE);
+        }
+            
+            
+    }
+    
+    public void insertarVenta() {
+        try {
+            int numFilas = tablaCompra.getRowCount();
+            
+            if (!txtSubtotal.getText().equals("") && !txtTotal.getText().equals("")
+                    && !productosSeleccionados.isEmpty() && cbClientes.getSelectedIndex()!=0) {
+                Calendar fecha = Calendar.getInstance();
+                Cliente cliente = (Cliente) cbClientes.getSelectedItem();
+                
+                
+                int cantidadP = Integer.parseInt(this.txtCantidad.getText());
+                
+                
+                
+                Producto prod;
+                Venta venta=null;
+                RelProductoVentas rel = null;
+                
+                for (int i = 0; i < productosSeleccionados.size(); i++) {
+                    
+                    prod = new Producto(productosSeleccionados.get(i).getId());
+                    venta = new Venta(Desc, fecha, total, cliente);
+                    float precioP = Float.parseFloat(this.tablaCompra.getValueAt(i, 2).toString());
+                    float importe = cantidadP * precioP;
+                    rel = new RelProductoVentas(prod, venta, cantidadP, precioP, importe);
+                }
+                
+                VentaDAO vent = new VentaDAO();
+                vent.agregar(venta);
+                RelProductoVentasDAO relacion = new RelProductoVentasDAO();
+                relacion.agregar(rel);
+                JOptionPane.showMessageDialog(this, "La venta se ha registrado.");
+            System.out.println("Si entró la venta");
+        }
+        } catch (Exception e) {
         }
     }
     
@@ -363,6 +373,10 @@ public class frmRegistro extends javax.swing.JDialog {
         });
 
         lblTotal.setText("Total");
+
+        txtTotal.setEditable(false);
+
+        txtSubtotal.setEditable(false);
 
         txtDescuento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
