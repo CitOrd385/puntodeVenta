@@ -6,8 +6,11 @@
 package objetosNegocio;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -161,9 +164,12 @@ public class Venta implements Serializable {
 
     @Override
     public String toString() {
-        return "Venta{" + "id= " + id + ", descuento= " + descuento +
-                ", fecha= " + fecha + ", montoTotal= " + montoTotal + 
-                ", cliente= " + cliente + ", productos= " + productos + '}';
+            SimpleDateFormat formateador= new SimpleDateFormat("dd-MM-yyyy");
+            Date fecha2= new Date(this.fecha.getTimeInMillis());
+        
+        return "" + "id= " + id + ", descuento = " + descuento +
+                ", fecha = " + formateador.format(fecha2) + ", montoTotal = " + montoTotal + 
+                ", cliente = " + cliente + ", productos = " + productos + "";
     }
 
     

@@ -31,7 +31,7 @@ public class frmBusqueda extends javax.swing.JDialog {
         this.clientedao= new ClienteDAO();
         this.ventadao= new VentaDAO();
         cargarCombo();
-        cargarJCalendar();
+        
     }
 
     @SuppressWarnings("unchecked")

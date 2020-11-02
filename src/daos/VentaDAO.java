@@ -22,8 +22,7 @@ public class VentaDAO extends BaseDAO<Venta>{
         EntityManager em= this.getEntityManager();
         em.getTransaction().begin();
         em.persist(venta);
-        
-        
+        em.getTransaction().commit();
     }
 
     @Override
@@ -39,7 +38,7 @@ public class VentaDAO extends BaseDAO<Venta>{
         for (Venta ventas1 : ventas) {
             System.out.println(ventas1);
         }
-
+        em.getTransaction().commit();
         return new ArrayList<>(ventas);
     }
 

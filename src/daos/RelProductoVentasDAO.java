@@ -22,15 +22,6 @@ public class RelProductoVentasDAO extends BaseDAO<RelProductoVentas>{
      EntityManagerFactory emf = Persistence.createEntityManagerFactory("PuntoDeVentaPU");
      EntityManager em = emf.createEntityManager();
     
-    public void insertarRelacion(RelProductoVentas relacion) {
-       
-        em.getTransaction().begin();
-
-        em.persist(relacion);
-        em.getTransaction().commit();
-        System.out.println("La relacion se ha insertado");
-    }
-
     @Override
     public void agregar(RelProductoVentas relacion) {
         EntityManager em = this.getEntityManager();

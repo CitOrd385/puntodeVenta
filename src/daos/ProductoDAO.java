@@ -39,7 +39,7 @@ public class ProductoDAO extends BaseDAO<Producto> {
         for (Producto productos1 : productos) {
             System.out.println(productos1);
         }
-
+        em.getTransaction().commit();
         return new ArrayList<>(productos);
     }
 

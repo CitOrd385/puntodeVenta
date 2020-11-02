@@ -39,7 +39,8 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         for (Cliente clientes1 : clientes) {
             System.out.println(clientes1);
         }
-
+        em.getTransaction().commit();
+        
         return new ArrayList<>(clientes);
 
     }
